@@ -46,6 +46,13 @@ logger = logging.get_logger(__name__)
 
 def get_model_config(config_path: str, **kwargs):
     modeling_backend = get_env("MODELING_BACKEND")
+    import torch.distributed as dist
+    import pdb
+    
+    # Only enter debugger on rank 0 to avoid multiple processes blocking
+    if dist.get_rank() == 0:
+        pdb.set_trace()
+    dist.barrier()
     if modeling_backend == "hf":
         logger.info_rank0("[CONFIG] Force loading model config from Huggingface.")
         return AutoConfig.from_pretrained(config_path, **kwargs)
