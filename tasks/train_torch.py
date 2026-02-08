@@ -152,7 +152,6 @@ def main():
     model_config = model.config
     helper.print_device_mem_info("VRAM usage after building model")
 
-    import torch.distributed as dist
     import pdb
     
     # Only enter debugger on rank 0 to avoid multiple processes blocking
